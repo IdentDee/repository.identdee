@@ -27,9 +27,9 @@
 </addon><addon id="repository.identdee" name="IdentDee private Repository" version="1.0.0" provider-name="IdentDee">
     <extension point="xbmc.addon.repository" name="IdentDee private Repository">
         <dir>
-            <info compressed="false">https://raw.githubusercontent.com/IdentDee/respository.identdee/master/repo/zips/addons.xml</info>
-            <checksum>https://raw.githubusercontent.com/IdentDee/respository.identdee/master/repo/zips/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/IdentDee/respository.identdee/master/repo/zips/</datadir>
+            <info compressed="false">https://raw.githubusercontent.com/identdee/repository.identdee/master/repo/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/identdee/repository.identdee/master/repo/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/identdee/repository.identdee/master/repo/zips/</datadir>
         </dir>
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/Gujal00/smrzips/master/addons.xml</info>
