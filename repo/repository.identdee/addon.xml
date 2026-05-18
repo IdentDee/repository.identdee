@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repository.identdee" name="IdentDee private Repository" version="1.0.0" provider-name="IdentDee">
+<addon id="b6a50484-93a0-4afb-a01c-8d17e059feda" name="IdentDee private Repository" version="1.0.0" provider-name="IdentDee">
     <extension point="xbmc.addon.repository" name="IdentDee private Repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/identdee/repository.identdee/master/repo/zips/addons.xml</info>
