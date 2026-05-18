@@ -44,7 +44,7 @@ def List(url):
 
     pattern = re.compile(
     r'<div\s+class="grid-tile-video".?>.?<a\s?href="(?P<url>[^"]+)"\s.*?'
-    r'<img\s+src="(?P<thumb>[^"]+)".+?'
+    r'<img\s[^>]*?\bdata-src="(?P<thumb>[^"]+)".+?'
     r'<div\sclass="duration">(?P<duration>\d{2}:*\d{2}:*\d*)</div>.*?'
     r'<div\sclass="title.*?>(?P<title>[^<]+)',
     re.DOTALL | re.IGNORECASE
