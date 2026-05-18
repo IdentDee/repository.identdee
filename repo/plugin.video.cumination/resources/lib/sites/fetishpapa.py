@@ -54,16 +54,16 @@ def List(url):
     videosection = sections[0]
     paginationsection = sections[1]
     
-    delimiter = '<li class="js-pop media-item ">'
+    delimiter = '<li class="js-pop mtile-x7 ">'
     re_videopage = '<a href="([^"]+)"'
     re_name = 'alt="([^"]+)'
     re_img = '<img.+?src="([^"]+)"'
-    re_duration = '<span class="media-item__info-item">.*?([0-9,:]+)'
+    re_duration = '<span class="mtile-x7__info-item mtile-x7__info-item-length">\s*([0-9:,]+)'
     utils.videos_list(site, 'fetishpapa.Play', videosection, delimiter, re_videopage, re_name, re_img, re_duration=re_duration)
-    
+
     re_npurl = '<a class="rightKey" href="([^"]+)">Next'
-    re_npnr = '<a class="rightKey" href=".*?(\d+)/">N'
-    re_lpnr = '<a class="rightKey" href=".*?(\d+)/">>'
+    re_npnr = '<a class="rightKey" href=".*?page=(\d+)">N'
+    re_lpnr = '<a class="rightKey" href=".*?page=(\d+)">>'
     
     utils.next_page(site, 'fetishpapa.List', paginationsection, re_npurl, re_npnr, re_lpnr, videos_per_page=None, contextm=None, baseurl=None)
 
@@ -88,7 +88,11 @@ def Play(url, name, download=None):
     vp = utils.VideoPlayer(name, download)
     vp.progress.update(25, "[CR]Loading video page[CR]")
     videopage = utils.getHtml(url, site.url, cookiehdr)
-    videolink = re.compile(r'<source.+?src="([^"]+)', re.DOTALL | re.IGNORECASE).findall(videopage)[0]
+    sources = re.findall(r'"src":"([^"]+)"\s*,\s*"quality":"([^"]+)"', videopage)
+    if not sources:
+        utils.notify(msg='No video sources found')
+        return
+    videolink = sources[0][0].replace('\\/', '/')
     vp.progress.update(75, "[CR]Loading video page[CR]")
     vp.play_from_direct_link(videolink)
 
