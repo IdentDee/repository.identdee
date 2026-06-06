@@ -1,11 +1,7 @@
-[B]Version 1.1.183b[/B]
-- eroprofile - fixed thumbnails (read lazyload data-src instead of placeholder src)
-
-[B]Version 1.1.183a[/B]
-- fetishpapa - fixed video listing, pagination and playback after site update
-
-[B]Version 1.1.183[/B]
-- chaturbate capture multiple streams
-- AWM network - fixed search for iXXX
-- bongacams - fixed Hour's top chat rooms, added Online favorites
-- chaturbate - added more choices of search engine for recorded model shows
+[B]Version 1.1.186[/B]
+- premiumporn - fix playback
+- 85po - fix playback
+- uflash - site removed
+- hitprn - .com replaced with hitprn.net
+- xnxx - added lookupinfo
+- erome - fix nextpage
