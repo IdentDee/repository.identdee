@@ -529,8 +529,6 @@ def _getHtml(url, referer='', headers=None, NoCookie=None, data=None, error='ret
                                     return ''
                                 else:
                                     raise
-                        else:
-                            raise
                 elif any(x == e.code for x in [403, 429, 503]) and any(x in result for x in ['__cf_chl_f_tk', '__cf_chl_jschl_tk__=', '/cdn-cgi/challenge-platform/']):
                     if addon.getSetting('fs_enable') == 'true':
                         notify('Flaresolverr', 'Cloudflare detected, retrying with Flaresolverr.')
@@ -538,8 +536,6 @@ def _getHtml(url, referer='', headers=None, NoCookie=None, data=None, error='ret
                     else:
                         notify(i18n('oh_oh'), 'This site has a Cloudflare Challenge.')
                         raise
-                else:
-                    raise
             elif 400 < e.code < 500:
                 if not e.code == 403:
                     notify(i18n('oh_oh'), i18n('not_exist'))
@@ -1432,7 +1428,7 @@ class VideoPlayer():
             raise ValueError(i18n('no_regex'))
 
     @_cancellable
-    def play_from_kt_player(self, html, url=None):
+    def play_from_kt_player(self, html, referer=None, follow_redirects=False):
         license = re.search(r"license_code:\s*'(\$\d+)", html, re.DOTALL | re.IGNORECASE)
         if license:
             license = license.group(1)
@@ -1465,7 +1461,13 @@ class VideoPlayer():
                 return
             from resources.lib.decrypters.kvsplayer import kvs_decode
             videourl = kvs_decode(videourl, license)
-        videourl += '|User-Agent={0}&Referer={1}'.format(USER_AGENT, url)
+
+        if follow_redirects:
+            videourl = getVideoLink(videourl, referer)
+
+        videourl += '|User-Agent={0}'.format(USER_AGENT)
+        if referer:
+            videourl += '&Referer={0}'.format(referer)
 
         if not videourl:
             self.progress.close()

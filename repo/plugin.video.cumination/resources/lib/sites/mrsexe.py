@@ -29,7 +29,6 @@ progress = utils.progress
 @site.register(default_mode=True)
 def Main():
     site.add_dir('[COLOR hotpink]Classiques[/COLOR]', site.url + 'classiques/', 'List', '', '')
-    site.add_dir('[COLOR hotpink]Series[/COLOR]', site.url + 'series.html', 'Series', '', '')
     site.add_dir('[COLOR hotpink]Search[/COLOR]', site.url + '?search=', 'Search', site.img_search)
     site.add_dir('[COLOR hotpink]Categories[/COLOR]', site.url, 'Categories', site.img_cat)
     site.add_dir('[COLOR hotpink]Stars[/COLOR]', site.url + 'filles/', 'Stars', '', '')
@@ -40,20 +39,19 @@ def Main():
 @site.register()
 def List(url):
     listhtml = utils.getHtml(url, '')
-    match = re.compile(r'<ul\s*class="thumb-list\s+xx.+?</ul>', re.DOTALL | re.IGNORECASE).findall(listhtml)
-    if match:
-        videos = re.compile(r'<li\s*class="(\s*hd|)".+?href="([^"]+).+?src="([^"]+).+?duration">.+?</i>\s*([\d,:,a-z,A-Z, ]+).+?>\s+([ -Z,a-z,é,è,à,ù,â,ê,î,ô,û]+)', re.DOTALL | re.IGNORECASE).findall(match[0])
-        if videos:
-            for qual, videopage, img, duration, name in videos:
-                if img.startswith('//'):
-                    img = 'http:' + img
-                name = utils.cleantext(name.strip())
-                site.add_download_link(name, site.url[:-1] + videopage, 'Playvid', img, name, duration=duration, quality=qual)
+    match = re.compile(r'<ul\s*class="thumb-list\s*xx.+?class="dark', re.DOTALL | re.IGNORECASE).findall(listhtml)
+    if not match:
+        match = re.compile(r'<ul\s*class="thumb-list\s*xx.+?footer', re.DOTALL | re.IGNORECASE).findall(listhtml)
+    items = re.compile(r'<li\s*class="(\s*hd|)".+?href="([^"]+).+?src="([^"]+).+?tion">[^\d]+([^<]+).+?>([^<]+)', re.DOTALL | re.IGNORECASE).findall(match[0])
+    for qual, videopage, img, duration, name in items:
+        if img.startswith('//'):
+            img = 'http:' + img
+        name = utils.cleantext(name.strip())
+        site.add_download_link(name, site.url[:-1] + videopage, 'Playvid', img, name, duration=duration, quality=qual)
 
-        nextp = re.compile(r'<li\s*class="arrow">.+?href="([^"]+)').search(listhtml)
-
-        if nextp:
-            site.add_dir('Next Page', site.url[:-1] + nextp.group(1), 'List', site.img_next)
+    nextp = re.compile(r'<li\s*class="arrow"><a\s*href="(.+?)">suivant').search(match[0])
+    if nextp:
+        site.add_dir('Next Page', site.url[:-1] + nextp.group(1), 'List', site.img_next)
 
     utils.eod()
 
@@ -71,22 +69,10 @@ def Search(url, keyword=None):
 
 @site.register()
 def Categories(url):
-    cathtml = utils.getHtml(url, referer=site.url)
-    match = re.compile('ories</option>.+?</select>', re.DOTALL | re.IGNORECASE).findall(cathtml)
-    if match:
-        categories = re.compile(r'<option\svalue="([^"]+).+?>.\s*([ -Z,a-z,é,è,à,ù,â,ê,î,ô,û]+)', re.DOTALL | re.IGNORECASE).findall(match[0])
-        for catpage, name in categories:
-            site.add_dir(name, site.url[:-1] + catpage, 'List', '')
-    utils.eod()
-
-@site.register()
-def Series(url):
-    serieshtml = utils.getHtml(url, '')
-    match = re.compile('<li>.+?<a\s+class="thumbnail"\s*href="([^"]+).+?<img id=.+? src="([^"]+).+?tion>([^<]+).+?fos">([\d]+)', re.DOTALL | re.IGNORECASE).findall(serieshtml)
-    for seriespage, img, name, videocount in match:
-        if img.startswith('//'):
-            img = 'https:' + img
-        site.add_dir(name + " (" + videocount + ")", site.url[:-1] + seriespage, 'List', img)
+    cathtml = utils.getHtml(url, '')
+    match = re.compile('value="(/cat[^"]+)">([^<]+)<', re.DOTALL | re.IGNORECASE).findall(cathtml)
+    for catpage, name in match:
+        site.add_dir(name, site.url[:-1] + catpage, 'List', '')
     utils.eod()
 
 
