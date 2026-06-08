@@ -1,0 +1,3 @@
+[submodule "repo/plugin.video.cumination"]
+	path = repo/plugin.video.cumination
+	url = ssh://git@projects.duvenhorst.net:10022/cduvenhorst/cumination.git
